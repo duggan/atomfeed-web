@@ -2,10 +2,15 @@ import type { APIContext } from "astro";
 import { BlogFeed } from "atomfeed";
 import { getPaginatedBlogPosts } from "../lib/paginate";
 
+type FeedFormat = "raw" | "styled";
+
 export async function GET(context: APIContext) {
   // Get page from query params or default to 1
   const pageNum = parseInt(context.url.searchParams.get("page") || "1");
   const pageSize = 10;
+
+  const format: FeedFormat =
+    (context.url.searchParams.get("format") as FeedFormat) || "styled";
 
   const page = getPaginatedBlogPosts(pageNum, pageSize);
   const baseUrl = context.site?.toString();
@@ -23,6 +28,7 @@ export async function GET(context: APIContext) {
   const feed = new BlogFeed({
     title: "Example",
     subtitle: "Example blog.",
+    stylesheet: format === "styled" ? "/atom.xsl" : undefined,
     id: new URL("/", baseUrl).toString(),
     pagination: {
       first: new URL("feed.xml", baseUrl).toString(),

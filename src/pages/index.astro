@@ -1,11 +1,161 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import { getPaginatedBlogPosts } from "../lib/paginate";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Get page from URL params or default to 1
+const page = Number(Astro.url.searchParams.get("page") || "1");
+const pageSize = 10;
+
+// Get posts and pagination data
+const { data: posts, pagination } = getPaginatedBlogPosts(page, pageSize);
+
+// Generate pagination URLs
+const makePageUrl = (pageNum: number) => {
+  const url = new URL(Astro.url);
+  url.searchParams.set("page", pageNum.toString());
+  return url.toString();
+};
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Blog Posts">
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-4xl font-bold">Blog Posts</h1>
+
+      <a
+        href="/atom.xml"
+        class="flex items-center gap-2 text-gray-600 hover:text-orange-500 transition-colors"
+        title="Atom Feed"
+      >
+        <span class="text-sm font-medium">Subscribe</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M6.18,15.64A2.18,2.18 0 0,1 8.36,17.82C8.36,19 7.38,20 6.18,20C5,20 4,19 4,17.82A2.18,2.18 0 0,1 6.18,15.64M4,4.44A15.56,15.56 0 0,1 19.56,20H16.73A12.73,12.73 0 0,0 4,7.27V4.44M4,10.1A9.9,9.9 0 0,1 13.9,20H11.07A7.07,7.07 0 0,0 4,12.93V10.1Z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Posts Grid -->
+    <div class="space-y-8 mb-12">
+      {
+        posts.map((post) => (
+          <article class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <h2 class="text-2xl font-semibold mb-2">
+                  <a
+                    href={`/posts/${post.id}`}
+                    class="text-blue-600 hover:text-blue-800"
+                  >
+                    {post.title}
+                  </a>
+                </h2>
+                <div class="flex gap-2 text-sm text-gray-600 mb-2">
+                  {post.categories?.map((category) => (
+                    <span class="bg-gray-100 px-2 py-1 rounded-full">
+                      {category}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <time class="text-sm text-gray-500">
+                {new Date(post.published).toLocaleDateString()}
+              </time>
+            </div>
+
+            {post.summary && <p class="text-gray-700 mb-4">{post.summary}</p>}
+
+            <div class="flex items-center gap-4 text-sm text-gray-600">
+              <div class="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                {Array.isArray(post.authors)
+                  ? post.authors.map((a) => a.name).join(", ")
+                  : post.author?.name}
+              </div>
+              {post.updated && post.updated !== post.published && (
+                <div class="flex items-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  <span>
+                    Updated {new Date(post.updated).toLocaleDateString()}
+                  </span>
+                </div>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <!-- Pagination -->
+    {
+      pagination.totalPages > 1 && (
+        <nav
+          class="flex justify-center items-center gap-2"
+          aria-label="Pagination"
+        >
+          {pagination.hasPreviousPage && (
+            <a
+              href={makePageUrl(pagination.currentPage - 1)}
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+            >
+              Previous
+            </a>
+          )}
+
+          {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(
+            (pageNum) => (
+              <a
+                href={makePageUrl(pageNum)}
+                class:list={[
+                  "px-4 py-2 text-sm font-medium rounded-md",
+                  pageNum === pagination.currentPage
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50",
+                ]}
+              >
+                {pageNum}
+              </a>
+            )
+          )}
+
+          {pagination.hasNextPage && (
+            <a
+              href={makePageUrl(pagination.currentPage + 1)}
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+            >
+              Next
+            </a>
+          )}
+        </nav>
+      )
+    }
+  </main>
 </Layout>

@@ -1,0 +1,71 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Page Not Found - 404">
+  <main class="max-w-4xl mx-auto px-4 py-16 text-center">
+    <div class="mb-8">
+      <h1 class="text-9xl font-bold text-gray-200 mb-4">404</h1>
+      <h2 class="text-4xl font-semibold text-gray-800 mb-4">Page Not Found</h2>
+      <p class="text-xl text-gray-600 mb-8">
+        The page you're looking for doesn't exist or has been moved.
+      </p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+      <a
+        href="/"
+        class="px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors inline-flex items-center gap-2"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
+          ></path>
+        </svg>
+        Home
+      </a>
+
+      <a
+        href="/"
+        class="px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors inline-flex items-center gap-2"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z"
+            clip-rule="evenodd"></path>
+          <path d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z"></path>
+        </svg>
+        Blog Posts
+      </a>
+
+      <a
+        href="/atom.xml"
+        class="px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-orange-500 transition-colors inline-flex items-center gap-2"
+        title="Subscribe to RSS feed"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M6.18,15.64A2.18,2.18 0 0,1 8.36,17.82C8.36,19 7.38,20 6.18,20C5,20 4,19 4,17.82A2.18,2.18 0 0,1 6.18,15.64M4,4.44A15.56,15.56 0 0,1 19.56,20H16.73A12.73,12.73 0 0,0 4,7.27V4.44M4,10.1A9.9,9.9 0 0,1 13.9,20H11.07A7.07,7.07 0 0,0 4,12.93V10.1Z"
+          ></path>
+        </svg>
+        Subscribe
+      </a>
+    </div>
+  </main>
+</Layout>
