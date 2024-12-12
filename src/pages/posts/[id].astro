@@ -28,7 +28,9 @@ const authorNames = Array.isArray(post.authors)
 
 // Get author links (websites)
 const authorWebsites = Array.isArray(post.authors)
-  ? post.authors.filter((a) => a.website).map((a) => a.website)
+  ? post.authors
+      .filter((a) => "website" in a && a.website)
+      .map((a) => "website" in a && a.website)
   : post.author?.website
     ? [post.author.website]
     : [];
@@ -73,7 +75,7 @@ const authorWebsites = Array.isArray(post.authors)
           {
             authorWebsites.length > 0 && (
               <a
-                href={authorWebsites[0]}
+                href={authorWebsites[0] as string}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="text-blue-600 hover:text-blue-800"
