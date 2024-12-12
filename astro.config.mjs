@@ -4,7 +4,7 @@ import deno from "@deno/astro-adapter";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://localhost:4322",
+  site: "https://atomfeed-web.deno.dev",
   output: "server",
   adapter: deno(),
 });
