@@ -63,7 +63,7 @@ export async function GET(context: APIContext) {
         links: url,
         content: post.content || "<p>Missing data</p>",
         published: post.published,
-        author,
+        author: post.author,
         updated: post.published,
       });
     }
