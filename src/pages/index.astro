@@ -2,6 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import { getPaginatedBlogPosts } from "../lib/paginate";
 
+const title = "AtomFeed Example Blog";
+
 // Get page from URL params or default to 1
 const page = Number(Astro.url.searchParams.get("page") || "1");
 const pageSize = 10;
@@ -17,11 +19,10 @@ const makePageUrl = (pageNum: number) => {
 };
 ---
 
-<Layout title="Blog Posts">
+<Layout title={title}>
   <main class="max-w-4xl mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-8">
-      <h1 class="text-4xl font-bold">Blog Posts</h1>
-
+      <h1 class="text-4xl font-bold">{title}</h1>
       <a
         href="/atom.xml"
         class="flex items-center gap-2 text-gray-600 hover:text-orange-500 transition-colors"
@@ -39,6 +40,23 @@ const makePageUrl = (pageNum: number) => {
           ></path>
         </svg>
       </a>
+    </div>
+
+    <div class="space-y-8 mb-12 border border-dashed p-4 bg-yellow-100">
+      <h2 class="text-gray-700 font-bold">
+        This is an example blog to demonstrate <a
+          class="underline hover:no-underline text-blue-800"
+          href="https://github.com/duggan/atomfeed">AtomFeed</a
+        >, an Atom 1.0 feed generator in TypeScript.
+      </h2>
+      <p>It supports stylesheets and pagination.</p>
+      <p>
+        <a
+          class="underline hover:no-underline text-blue-800"
+          href="https://github.com/duggan/atomfeed"
+          >Visit the project page for install instructions and documentation.</a
+        >
+      </p>
     </div>
 
     <!-- Posts Grid -->
