@@ -6,7 +6,7 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://atomfeed-web.deno.dev",
+  site: "https://atomfeed.deno.dev",
   output: "server",
   adapter: deno(),
   integrations: [tailwind()],
