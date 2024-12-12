@@ -5,10 +5,12 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "deno run --allow-net --allow-read --allow-env ./dist/server/entry.mjs",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.0.5"
+    "@deno/astro-adapter": "^0.2.0",
+    "astro": "^5.0.5",
+    "atomfeed": "^1.0.0"
   }
 }
