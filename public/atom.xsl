@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:atom="http://www.w3.org/2005/Atom">
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:atom="http://www.w3.org/2005/Atom">
   <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes"/>
-  
+
   <xsl:template match="/">
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
       <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title><xsl:value-of select="/atom:feed/atom:title"/> - Atom Feed</title>
+        <title>
+          <xsl:value-of select="/atom:feed/atom:title"/>
+ - Atom Feed</title>
         <style>
           :root {
             color-scheme: light dark;
@@ -114,6 +118,16 @@
             margin: 0.5rem 0;
           }
 
+          .article-content {
+            margin: 1rem 0;
+          }
+
+          /* Add specific styling for HTML content */
+          .article-content.type-html * {
+            margin: revert;
+            padding: revert;
+          }
+
           .category {
             background: #f3f4f6;
             padding: 0.25rem 0.75rem;
@@ -184,7 +198,28 @@
                 </div>
               </div>
 
-              <xsl:if test="atom:summary">
+              <!-- Content handling -->
+              <xsl:if test="atom:content">
+                <div class="article-content">
+                  <xsl:attribute name="class">
+                    article-content type-<xsl:value-of select="atom:content/@type"/>
+                  </xsl:attribute>
+                  <xsl:choose>
+                    <xsl:when test="atom:content/@type = 'html'">
+                      <xsl:value-of select="atom:content" disable-output-escaping="yes"/>
+                    </xsl:when>
+                    <xsl:when test="atom:content/@type = 'xhtml'">
+                      <xsl:copy-of select="atom:content/xhtml:div"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="atom:content"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </div>
+              </xsl:if>
+
+              <!-- Fallback to summary if no content -->
+              <xsl:if test="not(atom:content) and atom:summary">
                 <div class="article-content">
                   <xsl:value-of select="atom:summary"/>
                 </div>
