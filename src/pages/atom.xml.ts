@@ -31,6 +31,7 @@ export async function GET(context: APIContext) {
     stylesheet: format === "styled" ? "/atom.xsl" : undefined,
     id: new URL("/", baseUrl).toString(),
     pagination: {
+      current: new URL("feed.xml", baseUrl).toString(),
       first: new URL("feed.xml", baseUrl).toString(),
       last: new URL(
         `feed.xml?page=${page.pagination.totalPages}`,
