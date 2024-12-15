@@ -31,17 +31,17 @@ export async function GET(context: APIContext) {
     stylesheet: format === "styled" ? "/atom.xsl" : undefined,
     id: new URL("/", baseUrl).toString(),
     pagination: {
-      current: new URL("feed.xml", baseUrl).toString(),
-      first: new URL("feed.xml", baseUrl).toString(),
+      current: new URL("atom.xml", baseUrl).toString(),
+      first: new URL("atom.xml", baseUrl).toString(),
       last: new URL(
-        `feed.xml?page=${page.pagination.totalPages}`,
+        `atom.xml?page=${page.pagination.totalPages}`,
         baseUrl
       ).toString(),
       previous: page.pagination.hasPreviousPage
-        ? new URL(`feed.xml?page=${pageNum - 1}`, baseUrl).toString()
+        ? new URL(`atom.xml?page=${pageNum - 1}`, baseUrl).toString()
         : undefined,
       next: page.pagination.hasNextPage
-        ? new URL(`feed.xml?page=${pageNum + 1}`, baseUrl).toString()
+        ? new URL(`atom.xml?page=${pageNum + 1}`, baseUrl).toString()
         : undefined,
     },
     language: "en",
